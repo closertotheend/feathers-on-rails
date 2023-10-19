@@ -11,6 +11,7 @@ import { sqlite } from './sqlite'
 import { authentication } from './authentication'
 import { services } from './services/index'
 import { channels } from './channels'
+import { framework } from './feathers-on-rails/internal/framework'
 
 const app: Application = koa(feathers())
 
@@ -37,6 +38,7 @@ app.configure(sqlite)
 app.configure(authentication)
 app.configure(services)
 app.configure(channels)
+app.configure(framework)
 
 // Register hooks that run on all service methods
 app.hooks({

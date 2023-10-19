@@ -17,6 +17,14 @@ export async function up(knex: Knex): Promise<void> {
     table.string('githubId')
 
     table.string('auth0Id')
+
+    table.boolean('isVerified')
+    table.string('verifyToken')
+    table.string('verifyShortToken')
+    table.integer('verifyExpires')
+    table.string('verifyChanges')
+
+    
   })
 }
 

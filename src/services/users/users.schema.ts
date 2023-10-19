@@ -21,7 +21,12 @@ export const userSchema = {
     facebookId: { type: 'string' },
     twitterId: { type: 'string' },
     githubId: { type: 'string' },
-    auth0Id: { type: 'string' }
+    auth0Id: { type: 'string' },
+    isVerified: { type: 'boolean' },
+    verifyToken: { type: ['string', 'null'] },
+    verifyShortToken: { type: ['string', 'null'] },
+    verifyExpires:{ type: ['number', 'null'] },
+    verifyChanges: { type: ['string', 'null', 'object'] },
   }
 } as const
 export type User = FromSchema<typeof userSchema>

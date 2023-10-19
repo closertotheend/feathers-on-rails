@@ -17,12 +17,22 @@ import {
 import type { Application } from '../../declarations'
 import { UserService, getOptions } from './users.class'
 import { userPath, userMethods } from './users.shared'
+import { addVerification, removeVerification } from 'feathers-authentication-management'
+import { notifier } from '../auth-management/notifier'
 
 export * from './users.class'
 export * from './users.schema'
 
 // A configure function that registers the service and its hooks via `app.configure`
 export const user = (app: Application) => {
+  const sendVerify = () => {
+    return async (context: any) => {
+      const notifierInstance = notifier(context.app)
+      const users = Array.isArray(context.result) ? context.result : [context.result]
+      await Promise.all(users.map(async (user: any) => notifierInstance('resendVerifySignup', user)))
+    }
+  }
+
   // Register our service on the Feathers application
   app.use(userPath, new UserService(getOptions(app)), {
     // A list of all methods this service exposes externally
@@ -30,6 +40,10 @@ export const user = (app: Application) => {
     // You can add additional custom events to be sent to clients here
     events: []
   })
+  const hackyFixHook = (context: any) => {
+    delete context.data[1]
+    delete context.data[0]
+  }
   // Initialize hooks
   app.service(userPath).hooks({
     around: {
@@ -45,12 +59,21 @@ export const user = (app: Application) => {
       all: [schemaHooks.validateQuery(userQueryValidator), schemaHooks.resolveQuery(userQueryResolver)],
       find: [],
       get: [],
-      create: [schemaHooks.validateData(userDataValidator), schemaHooks.resolveData(userDataResolver)],
-      patch: [schemaHooks.validateData(userPatchValidator), schemaHooks.resolveData(userPatchResolver)],
+      create: [
+        schemaHooks.validateData(userDataValidator),
+        schemaHooks.resolveData(userDataResolver),
+        addVerification('auth-management')
+      ],
+      patch: [
+        hackyFixHook,
+        schemaHooks.validateData(userPatchValidator),
+        schemaHooks.resolveData(userPatchResolver)
+      ],
       remove: []
     },
     after: {
-      all: []
+      all: [],
+      create: [sendVerify(), removeVerification()]
     },
     error: {
       all: []
