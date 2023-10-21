@@ -1,5 +1,5 @@
 import { ParameterizedContext } from 'koa'
-import { Controller } from '../internal/Controller'
+import { Controller as Controller } from '../internal/Controller'
 import { logger } from '../../logger'
 
 class AuthController extends Controller {
@@ -14,10 +14,11 @@ class AuthController extends Controller {
         email: ctx.request.body.email,
         password: ctx.request.body.password
       })
-      Controller.session(ctx).set('user', authResult.user)
+      Controller.session(ctx).user = authResult.user)
+      Controller.session(ctx).set('authResult', authResult)
     } catch (e) {
       logger.info('failed to login' + e)
-      Controller.flash(ctx).set('warn', 'Login was unsuccessful')
+      Controller.flash(ctx).set('warn', 'Login was unsuccessful ' + e)
     }
     Controller.flash(ctx).set('info', 'Login was successful')
     await Controller.html(ctx, 'views/login/login.ejs')
@@ -37,11 +38,16 @@ class AuthController extends Controller {
   }
 
   async logout(ctx: ParameterizedContext) {
-    ctx.cookies.set('test', '123123')
     const app = Controller.app
-    const newLocal = Controller.session(ctx).get('accessToken')
+    const accessToken = ctx.cookies.get('koa.sess')
+    Controller.session(ctx)
+        //@ts-ignore
+    const newLocal = ctx.session.authResult.accessToken
+    // @ts-ignore
+    ctx.session = {}
     await app.service('authentication').remove(null, {
       authentication: {
+        //@ts-ignore
         accessToken: newLocal,
         strategy: 'jwt'
       }

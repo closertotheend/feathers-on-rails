@@ -7,19 +7,10 @@ export class Controller {
   static render: RenderType
   static app: Application
 
-  static session = (ctx: ParameterizedContext) => ({
-    set: (sessionKey: string, obj: any) => {
-      //@ts-ignore
-      ctx.session[sessionKey] = obj
-    },
-    get: (sessionKey?: string) => {
-      if (sessionKey) {
-        //@ts-ignore
-        return ctx.session[sessionKey]
-      }
-      return ctx.session
-    }
-  })
+  static session = (ctx: ParameterizedContext) => {
+    //@ts-ignore
+    return ctx.session;
+  }
 
   static flash = (ctx: ParameterizedContext) => ({
     set: (flashKey: string, stringOrStringArr: string | string[]) => {
@@ -36,7 +27,7 @@ export class Controller {
   static async html(ctx: ParameterizedContext, fileName: string, templateArgs?: any) {
     ctx.body = await Controller.render(fileName, {
       templateArgs,
-      global: { session: Controller.session(ctx).get(), flash: ctx.flash() }
+      global: { session: Controller.session(ctx), flash: ctx.flash() }
     })
   }
 

@@ -27,6 +27,7 @@ app.use(bodyParser())
 
 // Configure services and transports
 app.configure(rest())
+app.configure(framework)
 app.configure(
   socketio({
     cors: {
@@ -38,7 +39,6 @@ app.configure(sqlite)
 app.configure(authentication)
 app.configure(services)
 app.configure(channels)
-app.configure(framework)
 
 // Register hooks that run on all service methods
 app.hooks({

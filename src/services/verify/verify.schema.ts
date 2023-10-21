@@ -12,7 +12,7 @@ export const verifySchema = {
   type: 'object',
   additionalProperties: false,
   properties: {
-    token: {type: 'string'}
+    token: { type: 'string' }
   }
 } as const
 export type Verify = FromSchema<typeof verifySchema>
@@ -52,7 +52,7 @@ export const verifyQuerySchema = {
   $id: 'VerifyQuery',
   type: 'object',
   properties: {
-    token: {type: ['string']}
+    token: { type: ['string'] }
   }
 } as const
 export type VerifyQuery = FromSchema<typeof verifyQuerySchema>

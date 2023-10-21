@@ -10,56 +10,9 @@
         <hr class="login-hr">
         <p class="subtitle has-text-black">Please login to proceed.</p>
         <div class="box box__login">
-          <figure class="avatar">
+          <!-- <figure class="avatar">
             <img src="/img/150.png">
-          </figure>
-          <form action="/login" method="post">
-            <%- include('../partials/flash', {global}); %>
-            <div class="field">
-              <div class="control">
-                <input name="email" class="input is-large" type="email" placeholder="Your Email" autofocus="">
-              </div>
-            </div>
-
-            <div class="field">
-              <div class="control">
-                <input name="password" class="input is-large" type="password" placeholder="Your Password">
-              </div>
-            </div>
-            <div class="field">
-              <label class="checkbox">
-                <input name="rememberMe" type="checkbox" value="true">
-                Remember me
-              </label>
-            </div>
-            <button class="button is-block is-info is-large is-fullwidth">Login <i class="fa fa-sign-in" aria-hidden="true"></i></button>
-          </form>
-        </div>
-        <p class="has-text-grey">
-          <a href="/signup">Sign Up</a> &nbsp;·&nbsp;
-          <a href="/forgot-password">Forgot Password</a>
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<%- include('../partials/footer'); %>
-<%- include('../partials/base-end'); %><%- include('../partials/base-begin'); %>
-<%- include('../partials/nav'); %>
-<link rel="stylesheet" type="text/css" href="/css/login.css">
-
-<section class="hero has-background-light is-fullheight">
-  <div class="hero-body">
-    <div class="container has-text-centered">
-      <div class="column is-4 is-offset-4">
-        <h3 class="title has-text-black">Login</h3>
-        <hr class="login-hr">
-        <p class="subtitle has-text-black">Please login to proceed.</p>
-        <div class="box box__login">
-          <figure class="avatar">
-            <img src="/img/150.png">
-          </figure>
+          </figure> -->
           <form action="/login" method="post">
             <%- include('../partials/flash', {global}); %>
             <div class="field">
