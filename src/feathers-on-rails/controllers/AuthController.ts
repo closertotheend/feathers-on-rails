@@ -14,8 +14,8 @@ class AuthController extends Controller {
         email: ctx.request.body.email,
         password: ctx.request.body.password
       })
-      Controller.session(ctx).user = authResult.user)
-      Controller.session(ctx).set('authResult', authResult)
+      Controller.session(ctx).user = authResult.user
+      Controller.session(ctx).authResult = authResult
     } catch (e) {
       logger.info('failed to login' + e)
       Controller.flash(ctx).set('warn', 'Login was unsuccessful ' + e)
@@ -41,7 +41,7 @@ class AuthController extends Controller {
     const app = Controller.app
     const accessToken = ctx.cookies.get('koa.sess')
     Controller.session(ctx)
-        //@ts-ignore
+    //@ts-ignore
     const newLocal = ctx.session.authResult.accessToken
     // @ts-ignore
     ctx.session = {}
@@ -51,7 +51,7 @@ class AuthController extends Controller {
         accessToken: newLocal,
         strategy: 'jwt'
       }
-    });
+    })
     Controller.flash(ctx).set('info', 'Logged out')
     Controller.redirect(ctx, '/')
   }
