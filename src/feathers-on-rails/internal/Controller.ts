@@ -7,7 +7,7 @@ export class Controller {
   static render: RenderType
   static app: Application
 
-  static session = (ctx: ParameterizedContext) => {
+  static session = (ctx: ParameterizedContext) : any => {
     //@ts-ignore
     return ctx.session;
   }
