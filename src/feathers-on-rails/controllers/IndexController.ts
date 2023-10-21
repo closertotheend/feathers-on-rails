@@ -1,6 +1,5 @@
 import { ParameterizedContext } from 'koa'
 import { Controller } from '../internal/Controller'
-import { logger } from '../../logger'
 
 class IndexController extends Controller {
   async index(ctx: ParameterizedContext) {
