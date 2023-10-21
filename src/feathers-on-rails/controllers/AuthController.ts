@@ -14,8 +14,9 @@ class AuthController extends Controller {
         email: ctx.request.body.email,
         password: ctx.request.body.password
       })
-      Controller.session(ctx).user = authResult.user
-      Controller.session(ctx).authResult = authResult
+      const session = Controller.session(ctx)
+      session.user = authResult.user
+      session.authResult = authResult
     } catch (e) {
       logger.info('failed to login' + e)
       Controller.flash(ctx).set('warn', 'Login was unsuccessful ' + e)
@@ -33,25 +34,28 @@ class AuthController extends Controller {
       email: ctx.request.body.email,
       password: ctx.request.body.password
     })
+
     Controller.flash(ctx).set('info', 'Please check dev console or email for verify link')
     await Controller.html(ctx, 'views/signup/signup.ejs')
   }
 
   async logout(ctx: ParameterizedContext) {
-    const app = Controller.app
-    const accessToken = ctx.cookies.get('koa.sess')
-    Controller.session(ctx)
-    //@ts-ignore
-    const newLocal = ctx.session.authResult.accessToken
-    // @ts-ignore
-    ctx.session = {}
-    await app.service('authentication').remove(null, {
+    const session = Controller.session(ctx)
+
+    if(!session.authResult){
+      Controller.flash(ctx).set('warn', 'Nobody were logged in')
+      Controller.redirect(ctx, '/')
+    }
+
+    await Controller.app.service('authentication').remove(null, {
       authentication: {
-        //@ts-ignore
-        accessToken: newLocal,
+        accessToken: session.authResult.accessToken,
         strategy: 'jwt'
       }
     })
+    delete session.authResult
+    delete session.user
+
     Controller.flash(ctx).set('info', 'Logged out')
     Controller.redirect(ctx, '/')
   }
