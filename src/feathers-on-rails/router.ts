@@ -2,13 +2,13 @@ import Router from '@koa/router'
 import IndexController from './controllers/IndexController'
 import AuthController from './controllers/AuthController'
 
-export const configureRoutes = (r: Router) => {
-  r.get('/', IndexController.index)
-  r.get('/redirect', IndexController.redirect)
+export const configureRoutes = (router: Router) => {
+  router.get('/', IndexController.index)
+  router.get('/redirect', IndexController.redirect)
 
-  r.get('/login', AuthController.login)
-  r.post('/login', AuthController.performLogin)
-  r.get('/signup', AuthController.signup)
-  r.post('/signup', AuthController.performSignup)
-  r.get('/logout', AuthController.logout)
+  router.get('/login', AuthController.login)
+  router.post('/login', AuthController.performLogin)
+  router.get('/signup', AuthController.signup)
+  router.post('/signup', AuthController.performSignup)
+  router.get('/logout', AuthController.logout)
 }
