@@ -2,16 +2,15 @@ import { Application } from '../../declarations'
 import { User } from '../users/users.class'
 
 export const notifier = (app: Application) => {
-  function getLink(type:string, hash:string | undefined | null) {
-    return 'http://localhost:3030/' + type + '?token=' + hash
+  function getLink(type: string, hash: string | undefined | null) {
+    return 'http://localhost:3030/api/' + type + '?token=' + hash
   }
 
   async function sendEmail(email: any) {
     try {
-      console.log(email)
-      const result = await app.service('mailer').create(email)
-      console.log('EMAIL result:')
-      console.log(result)
+      console.log('Sending email:', email)
+      const result = await app.service('api/mailer').create(email)
+      console.log('Email send result:', result)
       return result
     } catch (err) {
       console.error(err)

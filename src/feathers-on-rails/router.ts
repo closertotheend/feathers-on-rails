@@ -1,6 +1,7 @@
 import Router from '@koa/router'
 import IndexController from './controllers/IndexController'
 import AuthController from './controllers/AuthController'
+import PostController from './controllers/PostController'
 
 export const configureRoutes = (router: Router) => {
   router.get('/', IndexController.index)
@@ -11,4 +12,7 @@ export const configureRoutes = (router: Router) => {
   router.get('/signup', AuthController.signup)
   router.post('/signup', AuthController.performSignup)
   router.get('/logout', AuthController.logout)
+
+  router.get('/post/new', PostController.new)
+  router.post('/post', PostController.create)
 }

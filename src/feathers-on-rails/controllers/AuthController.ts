@@ -30,7 +30,7 @@ class AuthController extends Controller {
   }
 
   async performSignup(ctx: ParameterizedContext) {
-    await Controller.app.service('users').create({
+    await Controller.app.service('api/users').create({
       email: ctx.request.body.email,
       password: ctx.request.body.password
     })
@@ -42,7 +42,7 @@ class AuthController extends Controller {
   async logout(ctx: ParameterizedContext) {
     const session = Controller.session(ctx)
 
-    if(!session.authResult){
+    if (!session.authResult) {
       Controller.flash(ctx).set('warn', 'Nobody were logged in')
       Controller.redirect(ctx, '/')
     }

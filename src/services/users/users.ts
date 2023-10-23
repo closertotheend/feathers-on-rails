@@ -62,7 +62,7 @@ export const user = (app: Application) => {
       create: [
         schemaHooks.validateData(userDataValidator),
         schemaHooks.resolveData(userDataResolver),
-        addVerification('auth-management')
+        addVerification('api/auth-management')
       ],
       patch: [
         hackyFixHook,

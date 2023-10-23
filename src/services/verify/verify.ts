@@ -32,7 +32,7 @@ export const verify = (app: Application) => {
     },
     before: {
       all: [schemaHooks.validateQuery(verifyQueryValidator), schemaHooks.resolveQuery(verifyQueryResolver)],
-      find: [],
+      find: []
     },
     after: {
       all: []

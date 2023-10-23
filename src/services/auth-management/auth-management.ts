@@ -4,16 +4,17 @@ import { notifier } from './notifier'
 
 export const authManagement = (app: Application) => {
   app.use(
-    'auth-management',
+    'api/auth-management',
     new AuthenticationManagementService(app, {
-        //@ts-ignore
-      notifier: notifier(app)
+      //@ts-ignore
+      notifier: notifier(app),
+      service: 'api/users'
     })
   )
 }
 
 declare module '../../declarations' {
   interface ServiceTypes {
-    'auth-management': AuthenticationManagementService
+    'api/auth-management': AuthenticationManagementService
   }
 }

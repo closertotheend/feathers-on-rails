@@ -1,4 +1,4 @@
-import { Application } from '../../declarations'
+import { Application, ServiceTypes } from '../../declarations'
 import { ParameterizedContext } from 'koa'
 
 type RenderType = (filename: string, templateArgs?: any) => Promise<any>
@@ -7,8 +7,10 @@ export class Controller {
   static render: RenderType
   static app: Application
 
-  static session = (ctx: ParameterizedContext) : any => {
-    //@ts-ignore
+  static session = (ctx: ParameterizedContext) => {
+    if(!ctx.session){
+      throw new Error('No session')
+    }
     return ctx.session;
   }
 

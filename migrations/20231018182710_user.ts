@@ -4,27 +4,18 @@ import type { Knex } from 'knex'
 export async function up(knex: Knex): Promise<void> {
   await knex.schema.createTable('users', (table) => {
     table.increments('id')
-
     table.string('email').unique()
     table.string('password')
-
     table.string('googleId')
-
     table.string('facebookId')
-
     table.string('twitterId')
-
     table.string('githubId')
-
     table.string('auth0Id')
-
     table.boolean('isVerified')
     table.string('verifyToken')
     table.string('verifyShortToken')
     table.integer('verifyExpires')
     table.string('verifyChanges')
-
-    
   })
 }
 

@@ -1,0 +1,31 @@
+<%- include('../partials/base-begin'); %>
+<%- include('../partials/nav'); %>
+
+<section class="hero is-fullheight">
+  <div class="hero-body has-background-light">
+    <div class="container">
+      <h1 class="title">Create a new post</h1>
+      <form action="/post" method="post" class="box">
+        <div class="field">
+          <label for="heading" class="label">Post heading</label>
+          <div class="control">
+            <input id="heading" class="input" type="text" placeholder="Heading" name="heading">
+          </div>
+        </div>
+        <div class="field">
+          <label for="text" class="label">Post text</label>
+            <textarea id="text" class="textarea" placeholder="Content" name="text"></textarea>
+        </div>
+        <div class="field is-grouped">
+          <div class="control">
+            <button class="button is-link">Create</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+
+<%- include('../partials/footer'); %>
+<%- include('../partials/base-end'); %>

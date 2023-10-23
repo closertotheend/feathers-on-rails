@@ -7,7 +7,7 @@ export type { Verify, VerifyData, VerifyPatch, VerifyQuery }
 
 export type VerifyClientService = Pick<VerifyService<Params<VerifyQuery>>, (typeof verifyMethods)[number]>
 
-export const verifyPath = 'verify'
+export const verifyPath = 'api/verify'
 
 export const verifyMethods = ['find'] as const
 

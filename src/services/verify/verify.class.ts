@@ -20,13 +20,12 @@ export class VerifyService<ServiceParams extends VerifyParams = VerifyParams>
 
   async find(_params?: ServiceParams): Promise<any> {
     const token = _params!.query!.token!
-    const authManagement = this.options.app.service('auth-management')
+    const authManagement = this.options.app.service('api/auth-management')
     const result = await authManagement.verifySignupLong({
-      token, // compares to .verifyToken
+      token // compares to .verifyToken
     })
     return result
   }
-
 }
 
 export const getOptions = (app: Application) => {

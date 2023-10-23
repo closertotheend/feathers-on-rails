@@ -7,7 +7,7 @@ export type { User, UserData, UserPatch, UserQuery }
 
 export type UserClientService = Pick<UserService<Params<UserQuery>>, (typeof userMethods)[number]>
 
-export const userPath = 'users'
+export const userPath = 'api/users'
 
 export const userMethods = ['find', 'get', 'create', 'patch', 'remove'] as const
 

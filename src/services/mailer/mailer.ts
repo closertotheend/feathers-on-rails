@@ -17,11 +17,11 @@ export const mailerService = async (app: Application) => {
   }
 
   // Register service and setting default From Email
-  app.use('mailer', mailer(transporter, { from: account.user }))
+  app.use('api/mailer', mailer(transporter, { from: account.user }))
 }
 
 declare module '../../declarations' {
   interface ServiceTypes {
-    mailer: Service
+    'api/mailer': Service
   }
 }

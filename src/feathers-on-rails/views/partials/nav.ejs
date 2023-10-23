@@ -20,6 +20,11 @@
         <a class="navbar-item is-size-5 has-text-weight-semibold" href="/signup">
           Sign up
         </a>
+        <% if (global?.session?.user){ %>
+        <a class="navbar-item is-size-5 has-text-weight-semibold" href="/post/new">
+          Create a post
+        </a>
+        <% } %>
       </div>
       <div class="navbar-end">
         <div class="navbar-item">
@@ -43,9 +48,9 @@
             </div>
           </div>
           <% } else { %>
-            <a class="navbar-item has-text-weight-semibold" href="/login">
-              Login
-            </a>
+          <a class="navbar-item has-text-weight-semibold" href="/login">
+            Login
+          </a>
           <% } %>
         </div>
       </div>
