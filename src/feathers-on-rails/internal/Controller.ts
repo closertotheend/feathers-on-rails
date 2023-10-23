@@ -18,10 +18,7 @@ export class Controller {
     set: (flashKey: string, stringOrStringArr: string | string[]) => {
       ctx.flash(flashKey, stringOrStringArr)
     },
-    get: (flashKey?: string) => {
-      if (flashKey) {
-        return ctx.flash(flashKey)
-      }
+    get: () => {
       return ctx.flash()
     }
   })

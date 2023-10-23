@@ -7,7 +7,7 @@ import type { Application } from './declarations'
 
 declare module './declarations' {
   interface ServiceTypes {
-    authentication: AuthenticationService
+    'api/authentication': AuthenticationService
   }
 }
 
@@ -22,6 +22,6 @@ export const authentication = (app: Application) => {
   authentication.register('github', new OAuthStrategy())
   authentication.register('auth0', new OAuthStrategy())
 
-  app.use('authentication', authentication)
+  app.use('api/authentication', authentication)
   app.configure(oauth())
 }

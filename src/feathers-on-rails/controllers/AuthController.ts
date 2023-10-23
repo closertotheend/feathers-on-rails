@@ -9,7 +9,7 @@ class AuthController extends Controller {
 
   async performLogin(ctx: ParameterizedContext) {
     try {
-      const authResult = await Controller.app.service('authentication').create({
+      const authResult = await Controller.app.service('api/authentication').create({
         strategy: 'local',
         email: ctx.request.body.email,
         password: ctx.request.body.password
@@ -47,7 +47,7 @@ class AuthController extends Controller {
       Controller.redirect(ctx, '/')
     }
 
-    await Controller.app.service('authentication').remove(null, {
+    await Controller.app.service('api/authentication').remove(null, {
       authentication: {
         accessToken: session.authResult.accessToken,
         strategy: 'jwt'
