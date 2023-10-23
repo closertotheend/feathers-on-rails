@@ -47,17 +47,20 @@ class AuthController extends Controller {
       Controller.redirect(ctx, '/')
     }
 
-    await Controller.app.service('api/authentication').remove(null, {
-      authentication: {
-        accessToken: session.authResult.accessToken,
-        strategy: 'jwt'
-      }
-    })
-    delete session.authResult
-    delete session.user
+    try {
+      await Controller.app.service('api/authentication').remove(null, {
+        authentication: {
+          accessToken: session.authResult.accessToken,
+          strategy: 'jwt'
+        }
+      })
+    } finally {
+      delete session.authResult
+      delete session.user
 
-    Controller.flash(ctx).set('info', 'Logged out')
-    Controller.redirect(ctx, '/')
+      Controller.flash(ctx).set('info', 'Logged out')
+      Controller.redirect(ctx, '/')
+    }
   }
 }
 
