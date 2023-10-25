@@ -4,7 +4,7 @@ import { logger } from '../../logger'
 
 class AuthController extends Controller {
   async login(ctx: ParameterizedContext) {
-    await Controller.html(ctx, 'views/login/login.ejs')
+    await Controller.render(ctx, 'views/login/login.ejs')
   }
 
   async performLogin(ctx: ParameterizedContext) {
@@ -22,11 +22,11 @@ class AuthController extends Controller {
       Controller.flash(ctx).set('warn', 'Login was unsuccessful ' + e)
     }
     Controller.flash(ctx).set('info', 'Login was successful')
-    await Controller.html(ctx, 'views/login/login.ejs')
+    await Controller.render(ctx, 'views/login/login.ejs')
   }
 
   async signup(ctx: ParameterizedContext) {
-    await Controller.html(ctx, 'views/signup/signup.ejs')
+    await Controller.render(ctx, 'views/signup/signup.ejs')
   }
 
   async performSignup(ctx: ParameterizedContext) {
@@ -36,7 +36,7 @@ class AuthController extends Controller {
     })
 
     Controller.flash(ctx).set('info', 'Please check dev console or email for verify link')
-    await Controller.html(ctx, 'views/signup/signup.ejs')
+    await Controller.render(ctx, 'views/signup/signup.ejs')
   }
 
   async logout(ctx: ParameterizedContext) {

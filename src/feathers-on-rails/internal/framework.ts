@@ -13,7 +13,7 @@ export const framework = (app: Application) => {
   app.configure(flashModule)
 
   const ejsLoaded = renderModule()
-  Controller.render = ejsLoaded.render
+  Controller.ejsRender = ejsLoaded.render
   Controller.app = app
 
   const router = new Router()

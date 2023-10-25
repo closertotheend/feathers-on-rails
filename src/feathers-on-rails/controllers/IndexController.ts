@@ -3,7 +3,7 @@ import { Controller } from '../internal/Controller'
 
 class IndexController extends Controller {
   async index(ctx: ParameterizedContext) {
-    await Controller.html(ctx, 'views/home/index.ejs', { title: 'someTitle' })
+    await Controller.render(ctx, 'views/home/index.ejs', { title: 'someTitle' })
   }
 
   async redirect(ctx: ParameterizedContext) {

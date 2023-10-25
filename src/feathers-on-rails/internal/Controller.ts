@@ -4,7 +4,7 @@ import { ParameterizedContext } from 'koa'
 type RenderType = (filename: string, templateArgs?: any) => Promise<any>
 
 export class Controller {
-  static render: RenderType
+  static ejsRender: RenderType
   static app: Application
 
   static session = (ctx: ParameterizedContext) => {
@@ -23,9 +23,9 @@ export class Controller {
     }
   })
 
-  static async html(ctx: ParameterizedContext, fileName: string, templateArgs?: any) {
-    ctx.body = await Controller.render(fileName, {
-      templateArgs,
+  static async render(ctx: ParameterizedContext, fileName: string, templateArgs?: any) {
+    ctx.body = await Controller.ejsRender(fileName, {
+      ...templateArgs,
       global: { session: Controller.session(ctx), flash: ctx.flash() }
     })
   }

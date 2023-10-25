@@ -14,5 +14,6 @@ export const configureRoutes = (router: Router) => {
   router.get('/logout', AuthController.logout)
 
   router.get('/post/new', PostController.new)
+  router.get('/post/:id', PostController.show)
   router.post('/post', PostController.create)
 }

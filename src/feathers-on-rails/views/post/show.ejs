@@ -1,0 +1,15 @@
+<%- include('../partials/base-begin'); %>
+<%- include('../partials/nav'); %>
+
+<section class="hero is-fullheight">
+  <div class="hero-body is-justify-content-flex-start is-align-items-flex-start">
+    <div class="container content">
+      <h4><%=post.createdAt %></h4>
+      <h1><%=post.heading %></h1>
+      <%=post.text %>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer'); %>
+<%- include('../partials/base-end'); %>

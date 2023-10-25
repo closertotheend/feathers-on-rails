@@ -1,0 +1,10 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "database": "${workspaceFolder:feathers-on-rails}/feathers-on-rails.sqlite",
+            "name": "local"
+        }
+    ]
+}
