@@ -1,17 +1,15 @@
-import { Application, ServiceTypes } from '../../declarations'
+import { Application } from '../../declarations'
 import { ParameterizedContext } from 'koa'
-
-type RenderType = (filename: string, templateArgs?: any) => Promise<any>
+import { Support } from './Support'
 
 export class Controller {
-  static ejsRender: RenderType
   static app: Application
 
   static session = (ctx: ParameterizedContext) => {
-    if(!ctx.session){
+    if (!ctx.session) {
       throw new Error('No session')
     }
-    return ctx.session;
+    return ctx.session
   }
 
   static flash = (ctx: ParameterizedContext) => ({
@@ -23,11 +21,15 @@ export class Controller {
     }
   })
 
-  static async render(ctx: ParameterizedContext, fileName: string, templateArgs?: any) {
-    ctx.body = await Controller.ejsRender(fileName, {
-      ...templateArgs,
-      global: { session: Controller.session(ctx), flash: ctx.flash() }
-    })
+  static async render(ctx: ParameterizedContext, fileName: string, templateArgs: any = {}) {
+    const global = {
+      ...Support.globalsToAdd,
+      session: Controller.session(ctx),
+      flash: Controller.flash(ctx).get(),
+      debug: () => Support.stringifyWIthFn(this)
+    }
+    templateArgs.global = global
+    ctx.body = await Support.ejs(fileName, templateArgs)
   }
 
   static json(ctx: ParameterizedContext, jsonObject: any) {

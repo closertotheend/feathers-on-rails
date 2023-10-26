@@ -6,6 +6,7 @@ import { renderModule } from './renderModule'
 import { youchModule } from './errorHandlerModule'
 import { flashModule } from './flashModule'
 import { sessionModule } from './sessionModulte'
+import { Support } from './Support'
 
 export const framework = (app: Application) => {
   app.configure(sessionModule)
@@ -13,7 +14,8 @@ export const framework = (app: Application) => {
   app.configure(flashModule)
 
   const ejsLoaded = renderModule()
-  Controller.ejsRender = ejsLoaded.render
+
+  Support.ejs = ejsLoaded.render
   Controller.app = app
 
   const router = new Router()

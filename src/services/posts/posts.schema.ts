@@ -11,17 +11,23 @@ export const postsSchema = {
   $id: 'Posts',
   type: 'object',
   additionalProperties: false,
-  required: ['id', 'text'],
+  required: ['id', 'text', 'userId'],
   properties: {
     id: { type: 'number' },
     heading: { type: 'string' },
     text: { type: 'string' },
-    userId: { type: 'number' }
+    userId: { type: 'number' },
+    user: { type: 'object' }
   }
 } as const
 export type Posts = FromSchema<typeof postsSchema>
 export const postsValidator = getValidator(postsSchema, dataValidator)
-export const postsResolver = resolve<Posts, HookContext<PostsService>>({})
+export const postsResolver = resolve<Posts, HookContext<PostsService>>({
+  user: async (value, post, context) => {
+    const user = await context.app.service('api/users').get(post.userId!)
+    return user
+  }
+})
 
 export const postsExternalResolver = resolve<Posts, HookContext<PostsService>>({})
 
