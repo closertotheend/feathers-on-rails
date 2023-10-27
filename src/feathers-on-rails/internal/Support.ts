@@ -8,7 +8,7 @@ export class Support {
   static _ = _
   static dateFns = dateFns
   static globalsToAdd = { _, dateFns }
-  static stringifyWIthFn = (obj: any) =>
+  static stringifyWithFn = (obj: any) =>
     JSON.stringify(
       obj,
       function (key, val) {

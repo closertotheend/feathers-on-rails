@@ -26,7 +26,7 @@ export class Controller {
       ...Support.globalsToAdd,
       session: Controller.session(ctx),
       flash: Controller.flash(ctx).get(),
-      debug: () => Support.stringifyWIthFn(this)
+      debug: () => Support.stringifyWithFn(this)
     }
     templateArgs.global = global
     ctx.body = await Support.ejs(fileName, templateArgs)

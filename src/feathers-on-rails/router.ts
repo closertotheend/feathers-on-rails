@@ -13,7 +13,8 @@ export const configureRoutes = (router: Router) => {
   router.post('/signup', AuthController.performSignup)
   router.get('/logout', AuthController.logout)
 
-  router.get('/post/new', PostController.new)
-  router.get('/post/:id', PostController.show)
-  router.post('/post', PostController.create)
+  router.get('/posts/new', PostController.new)
+  router.get('/posts/:id', PostController.show)
+  router.post('/posts', PostController.create)
+  router.delete('/posts/:id', PostController.remove)
 }
