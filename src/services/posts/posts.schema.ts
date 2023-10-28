@@ -17,7 +17,8 @@ export const postsSchema = {
     heading: { type: 'string' },
     text: { type: 'string' },
     userId: { type: 'number' },
-    userEmail: { type: 'string' }
+    userEmail: { type: 'string' },
+    createdAt: { type: 'string' }
   }
 } as const
 export type Posts = FromSchema<typeof postsSchema>

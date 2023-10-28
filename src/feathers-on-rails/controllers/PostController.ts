@@ -50,9 +50,12 @@ class PostController extends Controller {
       return await Controller.render(ctx, 'views/internal/not-authorized.ejs')
     }
     const postId = ctx.params.id
-    const post = await Controller.app.service('api/posts').update(postId, { ...ctx.request.body, userId })
+    if((await Controller.app.service('api/posts').get(postId)).userId !== userId){
+      return await Controller.render(ctx, 'views/internal/not-authorized.ejs')
+    }
+    await Controller.app.service('api/posts').patch(postId, ctx.request.body)
     Controller.flash(ctx).set('info', 'Post updated')
-    Controller.redirect(ctx, '/posts/' + post.id)
+    Controller.redirect(ctx, '/posts/' + postId)
   }
 
   async remove(ctx: ParameterizedContext) {

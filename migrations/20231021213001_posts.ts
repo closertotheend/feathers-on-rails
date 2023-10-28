@@ -7,7 +7,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string('heading').notNullable()
     table.text('text').notNullable()
     table.integer('userId').references('users.id').notNullable()
-    table.dateTime('createdAt').defaultTo(knex.fn.now())
+    table.dateTime('createdAt').defaultTo(knex.fn.now()).notNullable()
   })
 }
 
