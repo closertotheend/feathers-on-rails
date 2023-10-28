@@ -15,6 +15,8 @@ export const configureRoutes = (router: Router) => {
 
   router.get('/posts/new', PostController.new)
   router.get('/posts/:id', PostController.show)
+  router.get('/posts/:id/edit', PostController.edit)
   router.post('/posts', PostController.create)
-  router.delete('/posts/:id', PostController.remove)
+  router.post('/posts/:id/delete', PostController.remove)
+  router.post('/posts/:id', PostController.update)
 }

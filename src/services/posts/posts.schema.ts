@@ -17,15 +17,15 @@ export const postsSchema = {
     heading: { type: 'string' },
     text: { type: 'string' },
     userId: { type: 'number' },
-    user: { type: 'object' }
+    userEmail: { type: 'string' }
   }
 } as const
 export type Posts = FromSchema<typeof postsSchema>
 export const postsValidator = getValidator(postsSchema, dataValidator)
 export const postsResolver = resolve<Posts, HookContext<PostsService>>({
-  user: async (value, post, context) => {
+  userEmail: async (value, post, context) => {
     const user = await context.app.service('api/users').get(post.userId!)
-    return user
+    return user.email
   }
 })
 
