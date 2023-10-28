@@ -5,6 +5,7 @@ import PostController from './controllers/PostController'
 
 export const configureRoutes = (router: Router) => {
   router.get('/', (ctx) => IndexController.index(ctx))
+  router.get('/posts/page/:pageNr', (ctx) => IndexController.postsPage(ctx))
   router.get('/redirect', (ctx) =>  IndexController.redirect(ctx))
 
   router.get('/login', (ctx) =>  AuthController.login(ctx))

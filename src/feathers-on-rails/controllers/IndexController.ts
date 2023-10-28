@@ -13,6 +13,17 @@ class IndexController extends Controller {
     })
   }
 
+  async postsPage(ctx: ParameterizedContext) {
+    const pageNr = parseInt(ctx.params.pageNr)
+    const posts = (
+      await Controller.app
+        .service('api/posts')
+        .find({ query: { $sort: { id: -1 }, $limit: 5, $skip: 6 * (pageNr - 1) } })
+    ).data
+
+    await Controller.render(ctx, 'views/posts/page.ejs', { nextPageNr: pageNr + 1, posts })
+  }
+
   async redirect(ctx: ParameterizedContext) {
     Controller.flash(ctx).set('info', 'You have been redirected to main page')
     await Controller.redirect(ctx, '/')
