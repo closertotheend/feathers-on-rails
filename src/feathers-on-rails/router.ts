@@ -4,19 +4,19 @@ import AuthController from './controllers/AuthController'
 import PostController from './controllers/PostController'
 
 export const configureRoutes = (router: Router) => {
-  router.get('/', IndexController.index)
-  router.get('/redirect', IndexController.redirect)
+  router.get('/', (ctx) => IndexController.index(ctx))
+  router.get('/redirect', (ctx) =>  IndexController.redirect(ctx))
 
-  router.get('/login', AuthController.login)
-  router.post('/login', AuthController.performLogin)
-  router.get('/signup', AuthController.signup)
-  router.post('/signup', AuthController.performSignup)
-  router.get('/logout', AuthController.logout)
+  router.get('/login', (ctx) =>  AuthController.login(ctx))
+  router.post('/login', (ctx) =>  AuthController.performLogin(ctx))
+  router.get('/signup', (ctx) =>  AuthController.signup(ctx))
+  router.post('/signup', (ctx) =>  AuthController.performSignup(ctx))
+  router.get('/logout', (ctx) =>  AuthController.logout(ctx))
 
-  router.get('/posts/new', PostController.new)
-  router.get('/posts/:id', PostController.show)
-  router.get('/posts/:id/edit', PostController.edit)
-  router.post('/posts', PostController.create)
-  router.post('/posts/:id/delete', PostController.remove)
-  router.post('/posts/:id', PostController.update)
+  router.get('/posts/new', (ctx) =>  PostController.new(ctx))
+  router.get('/posts/:id', (ctx) =>  PostController.show(ctx))
+  router.get('/posts/:id/edit', (ctx) =>  PostController.edit(ctx))
+  router.post('/posts', (ctx) =>  PostController.create(ctx))
+  router.post('/posts/:id/delete', (ctx) =>  PostController.remove(ctx))
+  router.post('/posts/:id', (ctx) =>  PostController.update(ctx))
 }
