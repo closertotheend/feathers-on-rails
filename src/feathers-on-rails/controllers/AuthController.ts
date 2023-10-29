@@ -1,6 +1,7 @@
 import { ParameterizedContext } from 'koa'
 import { Controller as Controller } from '../internal/Controller'
 import { logger } from '../../logger'
+import { user } from '../../services/users/users'
 
 class AuthController extends Controller {
   async login(ctx: ParameterizedContext) {
@@ -30,6 +31,20 @@ class AuthController extends Controller {
   }
 
   async performSignup(ctx: ParameterizedContext) {
+    const userAlreadyPresent =
+      (
+        await Controller.app.service('api/users').find({
+          query: {
+            email: ctx.request.body.email
+          }
+        })
+      ).total > 0
+
+    if (userAlreadyPresent) {
+      Controller.flash(ctx).set('warn', 'User with such email already present')
+      return await Controller.redirect(ctx, '/signup')
+    }
+
     await Controller.app.service('api/users').create({
       email: ctx.request.body.email,
       password: ctx.request.body.password
