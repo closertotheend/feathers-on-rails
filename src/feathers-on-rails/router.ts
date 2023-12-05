@@ -13,8 +13,11 @@ export const configureRoutes = (router: Router) => {
   router.get('/signup', (ctx) =>  AuthController.signup(ctx))
   router.post('/signup', (ctx) =>  AuthController.performSignup(ctx))
   router.get('/logout', (ctx) =>  AuthController.logout(ctx))
+  router.get('/profile', (ctx) =>  AuthController.profile(ctx))
+  router.post('/changePassword', (ctx) =>  AuthController.changePassword(ctx))
 
   router.get('/posts/new', (ctx) =>  PostController.new(ctx))
+  router.get('/posts/my', (ctx) =>  PostController.myPosts(ctx))
   router.get('/posts/:id', (ctx) =>  PostController.show(ctx))
   router.get('/posts/:id/edit', (ctx) =>  PostController.edit(ctx))
   router.post('/posts', (ctx) =>  PostController.create(ctx))

@@ -17,12 +17,16 @@
         <a class="navbar-item is-active is-size-5 has-text-weight-semibold" href="/">
           Home
         </a>
+        <% if (!global?.session?.user){ %>
         <a class="navbar-item is-size-5 has-text-weight-semibold" href="/signup">
           Sign up
         </a>
-        <% if (global?.session?.user){ %>
+        <% } else { %>
         <a class="navbar-item is-size-5 has-text-weight-semibold" href="/posts/new">
           Create a post
+        </a>
+        <a class="navbar-item is-size-5 has-text-weight-semibold" href="/posts/my">
+          My Posts
         </a>
         <% } %>
       </div>

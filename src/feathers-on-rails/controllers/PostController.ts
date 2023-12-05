@@ -20,6 +20,17 @@ class PostController extends Controller {
     Controller.redirect(ctx, '/posts/' + post.id)
   }
 
+  async myPosts(ctx: ParameterizedContext) {
+    const userId = Controller.session(ctx).user.id
+    if (!userId) {
+      return await Controller.render(ctx, 'views/internal/not-authorized.ejs')
+    }
+    const posts = await Controller.app
+      .service('api/posts')
+      .find({ query: { userId }, paginate: false })
+    await Controller.render(ctx, 'views/posts/my.ejs', { posts })
+  }
+
   async show(ctx: ParameterizedContext) {
     const postId = ctx.params.id
     const post = await Controller.app.service('api/posts').get(postId)

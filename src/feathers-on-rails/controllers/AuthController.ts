@@ -4,6 +4,31 @@ import { logger } from '../../logger'
 import { user } from '../../services/users/users'
 
 class AuthController extends Controller {
+  async profile(ctx: ParameterizedContext) {
+    const userId = Controller.session(ctx).user?.id
+    if (!userId) {
+      Controller.redirect(ctx, '/login')
+    }
+    await Controller.render(ctx, 'views/profile/profile.ejs')
+  }
+
+  async changePassword(ctx: ParameterizedContext) {
+    const userId = Controller.session(ctx).user.id
+    if (!userId) {
+      return await Controller.render(ctx, 'views/internal/not-authorized.ejs')
+    }
+    await Controller.app.service('api/auth-management').create({
+      action: 'passwordChange',
+      value: {
+        oldPassword: ctx.request.body.oldPassword,
+        password: ctx.request.body.password,
+        user: { email: Controller.session(ctx).user.email }
+      }
+    })
+    Controller.flash(ctx).set('info', 'Password changed')
+    Controller.redirect(ctx, '/profile')
+  }
+
   async login(ctx: ParameterizedContext) {
     await Controller.render(ctx, 'views/login/login.ejs')
   }
@@ -18,11 +43,11 @@ class AuthController extends Controller {
       const session = Controller.session(ctx)
       session.user = authResult.user
       session.authResult = authResult
+      Controller.flash(ctx).set('info', 'Login was successful')
     } catch (e) {
       logger.info('failed to login' + e)
       Controller.flash(ctx).set('warn', 'Login was unsuccessful ' + e)
     }
-    Controller.flash(ctx).set('info', 'Login was successful')
     await Controller.render(ctx, 'views/login/login.ejs')
   }
 

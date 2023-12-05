@@ -1,0 +1,27 @@
+<%- include('../partials/base-begin'); %>
+<%- include('../partials/nav'); %>
+
+<section class="hero is-fullheight-with-navbar">
+  <div class="hero-body is-justify-content-flex-start is-align-items-flex-start">
+    <div class="container content">
+      <%- include('../partials/flash'); %>
+      <h1>My posts</h1>
+      <% posts.forEach(post => { %>
+        <section class="section">
+          <div class="columns">
+            <div class="column is-12">
+              <div class="content is-medium">
+                <h2 class="subtitle is-4 is-capitalized"><%= global.dateFns.formatRelative(new Date(post.createdAt), new Date()) %></h2>
+                <a href="/posts/<%=post.id %>" class="title"><%= post.heading %> <span class="subtitle">by <%= post.userEmail %></span></a>
+                <p><%- post.text %></p>
+              </div>
+            </div>
+          </div>
+        </section>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer'); %>
+<%- include('../partials/base-end'); %>

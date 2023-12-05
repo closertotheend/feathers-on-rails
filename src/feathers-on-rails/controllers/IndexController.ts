@@ -21,7 +21,7 @@ class IndexController extends Controller {
         .find({ query: { $sort: { id: -1 }, $limit: 5, $skip: 6 * (pageNr - 1) } })
     ).data
 
-    await Controller.render(ctx, 'views/posts/page.ejs', { nextPageNr: pageNr + 1, posts })
+    await Controller.render(ctx, 'views/posts/x-page.ejs', { nextPageNr: pageNr + 1, posts })
   }
 
   async redirect(ctx: ParameterizedContext) {
