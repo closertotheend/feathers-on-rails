@@ -5,7 +5,7 @@
   <div class="hero-body is-justify-content-flex-start is-align-items-flex-start">
     <div class="container content">
       <%- include('../partials/flash'); %>
-      <h1>My posts</h1>
+      <h1>Search results for <%= searchTerm %></h1>
       <% posts.forEach(post => { %>
         <%- include('../partials/post', {post}); %>
       <% }) %>

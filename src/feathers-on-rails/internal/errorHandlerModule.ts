@@ -13,31 +13,15 @@ export const youchModule = (app: Application) => {
         const html = await youch.toHTML()
         ctx.body = html
       }
-    } catch (err) {
+    } catch (err: any) {
       const youch = new Youch(err, ctx)
 
-      const options = {
-        // Defaults to false
-        displayShortPath: false,
-
-        // Defaults to single whitspace
-        prefix: ' ',
-
-        // Defaults to false
-        hideErrorTitle: false,
-
-        // Defaults to false
-        hideMessage: false,
-
-        // Defaults to false
-        displayMainFrameOnly: false,
-
-        // Defaults to 3
-        framesMaxLimit: 3
+      if (err.path.indexOf('.ejs') > 0) {
+        err.message = 'EJS fail: at' + err.path + ' at line ' + err.message
       }
 
       const output = await youch.toJSON()
-      console.log(forTerminal(output, options))
+      console.log(forTerminal(output))
 
       //@ts-ignore
       const html = await youch.toHTML()

@@ -66,7 +66,11 @@ export const postsQuerySchema = {
   type: 'object',
   additionalProperties: false,
   properties: {
-    ...querySyntax(postsSchema.properties)
+    ...querySyntax(postsSchema.properties),
+    // $like query does not work otherwise :(
+    heading: { type: ['string', 'object'] },
+    text: { type: ['string', 'object'] },
+    $or: { type: ['array'] },
   }
 } as const
 export type PostsQuery = FromSchema<typeof postsQuerySchema>

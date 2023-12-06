@@ -2,6 +2,7 @@ import Router from '@koa/router'
 import IndexController from './controllers/IndexController'
 import AuthController from './controllers/AuthController'
 import PostController from './controllers/PostController'
+import SearchController from './controllers/SearchController'
 
 export const configureRoutes = (router: Router) => {
   router.get('/', (ctx) => IndexController.index(ctx))
@@ -23,4 +24,6 @@ export const configureRoutes = (router: Router) => {
   router.post('/posts', (ctx) =>  PostController.create(ctx))
   router.post('/posts/:id/delete', (ctx) =>  PostController.remove(ctx))
   router.post('/posts/:id', (ctx) =>  PostController.update(ctx))
+
+  router.get('/search', (ctx) =>  SearchController.search(ctx))
 }
