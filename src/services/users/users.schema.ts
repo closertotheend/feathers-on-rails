@@ -71,7 +71,6 @@ export const userPatchSchema = {
 export type UserPatch = FromSchema<typeof userPatchSchema>
 export const userPatchValidator = getValidator(userPatchSchema, dataValidator)
 export const userPatchResolver = resolve<UserPatch, HookContext<UserService>>({
-  password: passwordHash({ strategy: 'local' })
 })
 
 // Schema for allowed query properties
