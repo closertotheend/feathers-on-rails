@@ -13,9 +13,7 @@
         </div>
       </div>
 
-      <% twoLatestPosts.forEach(post => { %>
-        <%- include('../partials/post', {post}); %>
-      <%  }) %>
+      <%- twoLatestPosts.map(post => include('../partials/post', {post})) %>
 
       <% global._.chunk(fourLatestPostsAfter2Latest, 2).forEach(([left, right]) => { %>
       <section class="section">

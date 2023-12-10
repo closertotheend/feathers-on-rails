@@ -1,6 +1,4 @@
-<% posts.forEach(post => { %>
-  <%- include('../partials/post', {post}); %>
-<% }) %>
+<%- posts.map(post => include('../partials/post', {post})) %>
 
 <% if(posts.length > 0) { %>
 <div hx-get="/posts/page/<%=nextPageNr %>" hx-trigger="revealed" hx-swap="afterend"></div>
