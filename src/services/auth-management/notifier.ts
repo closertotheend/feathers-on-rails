@@ -2,10 +2,7 @@ import { Application } from '../../declarations'
 import { User } from '../users/users.class'
 
 export const notifier = (app: Application) => {
-  function getLink(type: string, hash: string | undefined | null) {
-    return 'http://localhost:3030/api/' + type + '?token=' + hash
-  }
-
+  
   async function sendEmail(email: any) {
     try {
       console.log('Sending email:', email)
@@ -23,7 +20,7 @@ export const notifier = (app: Application) => {
         from: 'test@localhost',
         to: user.email,
         subject: 'Please confirm your e-mail address',
-        text: 'Click here: ' + getLink('verify', user.verifyToken)
+        text: 'Click here: ' + 'http://localhost:3030/verify?token=' + user.verifyToken
       })
     } else if (type === 'verifySignup') {
       return sendEmail({
@@ -31,6 +28,13 @@ export const notifier = (app: Application) => {
         to: user.email,
         subject: 'E-Mail address verified',
         text: 'Registration process complete. Thanks for joining us!'
+      })
+    } else if (type === 'sendResetPwd'){
+      return sendEmail({
+        from: 'test@localhost',
+        to: user.email,
+        subject: 'Password reset link',
+        text: 'http://localhost:3030/new-password?token=' + user.resetToken
       })
     }
   }

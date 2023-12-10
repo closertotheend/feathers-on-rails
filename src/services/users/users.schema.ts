@@ -26,7 +26,11 @@ export const userSchema = {
     verifyToken: { type: ['string', 'null'] },
     verifyShortToken: { type: ['string', 'null'] },
     verifyExpires: { type: ['number', 'null'] },
-    verifyChanges: { type: ['object', 'null'] }
+    verifyChanges: { type: ['object', 'null'] },
+    resetExpires: {type: ['number', 'null']},
+    resetAttempts: {type: ['number', 'null']},
+    resetToken: {type: ['string', 'null']},
+    resetShortToken: {type: ['string', 'null']}
   }
 } as const
 export type User = FromSchema<typeof userSchema>

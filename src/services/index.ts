@@ -4,13 +4,11 @@ import { user } from './users/users'
 import type { Application } from '../declarations'
 import { authManagement } from './auth-management/auth-management'
 import { mailerService } from './mailer/mailer'
-import { verify } from './verify/verify'
 
 export const services = (app: Application) => {
   app.configure(posts)
   app.configure(user)
   app.configure(mailerService)
   app.configure(authManagement)
-  app.configure(verify)
   // All services will be registered here
 }

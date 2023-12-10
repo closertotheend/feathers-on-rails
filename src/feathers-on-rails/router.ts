@@ -15,7 +15,12 @@ export const configureRoutes = (router: Router) => {
   router.post('/signup', (ctx) =>  AuthController.performSignup(ctx))
   router.get('/logout', (ctx) =>  AuthController.logout(ctx))
   router.get('/profile', (ctx) =>  AuthController.profile(ctx))
-  router.post('/changePassword', (ctx) =>  AuthController.changePassword(ctx))
+  router.post('/change-password', (ctx) =>  AuthController.changePassword(ctx))
+  router.get('/forgot-password', (ctx) =>  AuthController.forgotPassword(ctx))
+  router.post('/restore-password', (ctx) =>  AuthController.restorePassword(ctx))
+  router.get('/new-password', (ctx) =>  AuthController.newPassword(ctx))
+  router.post('/confirm-new-password', (ctx) =>  AuthController.confirmNewPassword(ctx))
+  router.get('/verify', (ctx) =>  AuthController.verify(ctx))
 
   router.get('/posts/new', (ctx) =>  PostController.new(ctx))
   router.get('/posts/my', (ctx) =>  PostController.myPosts(ctx))

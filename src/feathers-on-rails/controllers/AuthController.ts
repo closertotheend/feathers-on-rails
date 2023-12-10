@@ -1,7 +1,5 @@
 import { ParameterizedContext } from 'koa'
 import { Controller as Controller } from '../internal/Controller'
-import { logger } from '../../logger'
-import { user } from '../../services/users/users'
 
 class AuthController extends Controller {
   async profile(ctx: ParameterizedContext) {
@@ -44,9 +42,8 @@ class AuthController extends Controller {
       session.user = authResult.user
       session.authResult = authResult
       Controller.flash(ctx).set('info', 'Login was successful')
-    } catch (e) {
-      logger.info('failed to login' + e)
-      Controller.flash(ctx).set('warn', 'Login was unsuccessful ' + e)
+    } catch (e: any) {
+      Controller.flash(ctx).set('warn', 'Login was unsuccessful: ' + e.message)
     }
     await Controller.render(ctx, 'views/login/login.ejs')
   }
@@ -101,6 +98,48 @@ class AuthController extends Controller {
       Controller.flash(ctx).set('info', 'Logged out')
       Controller.redirect(ctx, '/')
     }
+  }
+
+  async forgotPassword(ctx: ParameterizedContext) {
+    await Controller.render(ctx, 'views/forgot-password/forgot-password.ejs')
+  }
+
+  async restorePassword(ctx: ParameterizedContext) {
+    try {
+      const email = ctx.request.body.email
+      await Controller.app.service('api/auth-management').create({
+        action: 'sendResetPwd',
+        value: {
+          email
+        }
+      })
+      Controller.flash(ctx).set('warn', 'Check email or console')
+    } catch (e: any) {
+      Controller.flash(ctx).set('error', 'Fail: ' + e.message)
+    }
+    await Controller.render(ctx, 'views/forgot-password/forgot-password.ejs')
+  }
+
+  async newPassword(ctx: ParameterizedContext) {
+    Controller.flash(ctx).set('info', 'Please set new password')
+    await Controller.render(ctx, 'views/new-password/new-password.ejs', { token: ctx.query.token })
+  }
+
+  async confirmNewPassword(ctx: ParameterizedContext) {
+    const { token, password } = ctx.request.body
+    await Controller.app
+      .service('api/auth-management')
+      .resetPasswordLong({ password, token })
+    Controller.flash(ctx).set('info', 'Reset was successful, please login with your new password')
+    Controller.redirect(ctx, '/login')
+  }
+
+  async verify(ctx: ParameterizedContext) {
+    await Controller.app
+      .service('api/auth-management')
+      .verifySignupLong({token: ctx.query.token as string})
+    Controller.flash(ctx).set('success', 'Successfully verified')
+    Controller.redirect(ctx, '/login')
   }
 }
 

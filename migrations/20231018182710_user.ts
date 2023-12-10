@@ -16,6 +16,10 @@ export async function up(knex: Knex): Promise<void> {
     table.string('verifyShortToken')
     table.integer('verifyExpires')
     table.string('verifyChanges')
+    table.integer('resetExpires')
+    table.integer('resetAttempts')
+    table.string('resetToken')
+    table.string('resetShortToken')
   })
 }
 
