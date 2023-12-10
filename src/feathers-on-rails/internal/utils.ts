@@ -3,12 +3,12 @@ import * as dateFns from 'date-fns'
 
 type RenderType = (filename: string, templateArgs?: any) => Promise<any>
 
-export class Support {
-  static ejs: RenderType
-  static _ = _
-  static dateFns = dateFns
-  static globalsToAdd = { _, dateFns }
-  static stringifyWithFn = (obj: any) =>
+export const Utils = {
+  ejs: null as unknown as RenderType,
+  _,
+  dateFns,
+  globalsToAddToTemplates: { _, dateFns },
+  stringifyWithFn: (obj: any) =>
     JSON.stringify(
       obj,
       function (key, val) {

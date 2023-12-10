@@ -1,12 +1,11 @@
 import Router from '@koa/router'
 import { Application } from '../../declarations'
 import { configureRoutes } from '../router'
-import { Controller } from './Controller'
 import { renderModule } from './renderModule'
 import { youchModule } from './errorHandlerModule'
 import { flashModule } from './flashModule'
 import { sessionModule } from './sessionModulte'
-import { Support } from './Support'
+import { Utils } from './utils'
 
 export const framework = (app: Application) => {
   app.configure(sessionModule)
@@ -15,8 +14,7 @@ export const framework = (app: Application) => {
 
   const ejsLoaded = renderModule()
 
-  Support.ejs = ejsLoaded.render
-  Controller.app = app
+  Utils.ejs = ejsLoaded.render
 
   const router = new Router()
   configureRoutes(router)

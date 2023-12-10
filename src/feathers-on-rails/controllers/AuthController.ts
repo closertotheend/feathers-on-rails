@@ -1,61 +1,64 @@
 import { ParameterizedContext } from 'koa'
-import { Controller as Controller } from '../internal/Controller'
+import { Framework } from '../internal'
+import { app } from '../../app'
 
-class AuthController extends Controller {
+const { render, flash, redirect, session } = Framework
+
+class AuthController {
   async profile(ctx: ParameterizedContext) {
-    const userId = Controller.session(ctx).user?.id
+    const userId = session(ctx).user?.id
     if (!userId) {
-      Controller.redirect(ctx, '/login')
+      redirect(ctx, '/login')
     }
-    await Controller.render(ctx, 'views/profile/profile.ejs')
+    await render(ctx, 'views/profile/profile.ejs')
   }
 
   async changePassword(ctx: ParameterizedContext) {
-    const userId = Controller.session(ctx).user.id
+    const userId = session(ctx).user.id
     if (!userId) {
-      return await Controller.render(ctx, 'views/internal/not-authorized.ejs')
+      return await render(ctx, 'views/internal/not-authorized.ejs')
     }
-    await Controller.app.service('api/auth-management').create({
+    await app.service('api/auth-management').create({
       action: 'passwordChange',
       value: {
         oldPassword: ctx.request.body.oldPassword,
         password: ctx.request.body.password,
-        user: { email: Controller.session(ctx).user.email }
+        user: { email: session(ctx).user.email }
       }
     })
-    Controller.flash(ctx).set('info', 'Password changed')
-    Controller.redirect(ctx, '/profile')
+    flash(ctx).set('info', 'Password changed')
+    redirect(ctx, '/profile')
   }
 
   async login(ctx: ParameterizedContext) {
-    await Controller.render(ctx, 'views/login/login.ejs')
+    await render(ctx, 'views/login/login.ejs')
   }
 
   async performLogin(ctx: ParameterizedContext) {
     try {
-      const authResult = await Controller.app.service('api/authentication').create({
+      const authResult = await app.service('api/authentication').create({
         strategy: 'local',
         email: ctx.request.body.email,
         password: ctx.request.body.password
       })
-      const session = Controller.session(ctx)
-      session.user = authResult.user
-      session.authResult = authResult
-      Controller.flash(ctx).set('info', 'Login was successful')
+      const localSession = session(ctx)
+      localSession.user = authResult.user
+      localSession.authResult = authResult
+      flash(ctx).set('info', 'Login was successful')
     } catch (e: any) {
-      Controller.flash(ctx).set('warn', 'Login was unsuccessful: ' + e.message)
+      flash(ctx).set('warn', 'Login was unsuccessful: ' + e.message)
     }
-    await Controller.render(ctx, 'views/login/login.ejs')
+    await render(ctx, 'views/login/login.ejs')
   }
 
   async signup(ctx: ParameterizedContext) {
-    await Controller.render(ctx, 'views/signup/signup.ejs')
+    await render(ctx, 'views/signup/signup.ejs')
   }
 
   async performSignup(ctx: ParameterizedContext) {
     const userAlreadyPresent =
       (
-        await Controller.app.service('api/users').find({
+        await app.service('api/users').find({
           query: {
             email: ctx.request.body.email
           }
@@ -63,83 +66,79 @@ class AuthController extends Controller {
       ).total > 0
 
     if (userAlreadyPresent) {
-      Controller.flash(ctx).set('warn', 'User with such email already present')
-      return await Controller.redirect(ctx, '/signup')
+      flash(ctx).set('warn', 'User with such email already present')
+      return await redirect(ctx, '/signup')
     }
 
-    await Controller.app.service('api/users').create({
+    await app.service('api/users').create({
       email: ctx.request.body.email,
       password: ctx.request.body.password
     })
 
-    Controller.flash(ctx).set('info', 'Please check dev console or email for verify link')
-    await Controller.render(ctx, 'views/signup/signup.ejs')
+    flash(ctx).set('info', 'Please check dev console or email for verify link')
+    await render(ctx, 'views/signup/signup.ejs')
   }
 
   async logout(ctx: ParameterizedContext) {
-    const session = Controller.session(ctx)
+    const sessionLocal = session(ctx)
 
-    if (!session.authResult) {
-      Controller.flash(ctx).set('warn', 'Nobody were logged in')
-      Controller.redirect(ctx, '/')
+    if (!sessionLocal.authResult) {
+      flash(ctx).set('warn', 'Nobody were logged in')
+      redirect(ctx, '/')
     }
 
     try {
-      await Controller.app.service('api/authentication').remove(null, {
+      await app.service('api/authentication').remove(null, {
         authentication: {
-          accessToken: session.authResult.accessToken,
+          accessToken: sessionLocal.authResult.accessToken,
           strategy: 'jwt'
         }
       })
     } finally {
-      delete session.authResult
-      delete session.user
+      delete sessionLocal.authResult
+      delete sessionLocal.user
 
-      Controller.flash(ctx).set('info', 'Logged out')
-      Controller.redirect(ctx, '/')
+      flash(ctx).set('info', 'Logged out')
+      redirect(ctx, '/')
     }
   }
 
   async forgotPassword(ctx: ParameterizedContext) {
-    await Controller.render(ctx, 'views/forgot-password/forgot-password.ejs')
+    await render(ctx, 'views/forgot-password/forgot-password.ejs')
   }
 
   async restorePassword(ctx: ParameterizedContext) {
     try {
       const email = ctx.request.body.email
-      await Controller.app.service('api/auth-management').create({
+      await app.service('api/auth-management').create({
         action: 'sendResetPwd',
         value: {
           email
         }
       })
-      Controller.flash(ctx).set('warn', 'Check email or console')
+      flash(ctx).set('warn', 'Check email or console')
     } catch (e: any) {
-      Controller.flash(ctx).set('error', 'Fail: ' + e.message)
+      flash(ctx).set('error', 'Fail: ' + e.message)
     }
-    await Controller.render(ctx, 'views/forgot-password/forgot-password.ejs')
+    await render(ctx, 'views/forgot-password/forgot-password.ejs')
   }
 
   async newPassword(ctx: ParameterizedContext) {
-    Controller.flash(ctx).set('info', 'Please set new password')
-    await Controller.render(ctx, 'views/new-password/new-password.ejs', { token: ctx.query.token })
+    flash(ctx).set('info', 'Please set new password')
+    await render(ctx, 'views/new-password/new-password.ejs', { token: ctx.query.token })
   }
 
   async confirmNewPassword(ctx: ParameterizedContext) {
     const { token, password } = ctx.request.body
-    await Controller.app
-      .service('api/auth-management')
-      .resetPasswordLong({ password, token })
-    Controller.flash(ctx).set('info', 'Reset was successful, please login with your new password')
-    Controller.redirect(ctx, '/login')
+    await app.service('api/auth-management').resetPasswordLong({ password, token })
+    flash(ctx).set('info', 'Reset was successful, please login with your new password')
+    redirect(ctx, '/login')
   }
 
   async verify(ctx: ParameterizedContext) {
-    await Controller.app
-      .service('api/auth-management')
-      .verifySignupLong({token: ctx.query.token as string})
-    Controller.flash(ctx).set('success', 'Successfully verified')
-    Controller.redirect(ctx, '/login')
+    await app.service('api/auth-management').verifySignupLong({ token: ctx.query.token as string })
+    flash(ctx).set('success', 'Successfully verified')
+    redirect(ctx, '/login')
   }
 }
 

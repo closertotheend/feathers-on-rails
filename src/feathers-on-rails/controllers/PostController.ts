@@ -1,50 +1,51 @@
 import { ParameterizedContext } from 'koa'
-import { Controller } from '../internal/Controller'
+import { Framework } from '../internal'
+import { app } from '../../app'
 
-class PostController extends Controller {
+const { render, flash, redirect, session } = Framework
+
+class PostController {
   async new(ctx: ParameterizedContext) {
-    const userId = Controller.session(ctx).user?.id
+    const userId = Framework.session(ctx).user?.id
     if (!userId) {
-      return await Controller.render(ctx, 'views/internal/not-authorized.ejs')
+      return await Framework.render(ctx, 'views/internal/not-authorized.ejs')
     }
-    await Controller.render(ctx, 'views/posts/new.ejs')
+    await Framework.render(ctx, 'views/posts/new.ejs')
   }
 
   async create(ctx: ParameterizedContext) {
-    const userId = Controller.session(ctx).user.id
+    const userId = session(ctx).user.id
     if (!userId) {
-      return await Controller.render(ctx, 'views/internal/not-authorized.ejs')
+      return await render(ctx, 'views/internal/not-authorized.ejs')
     }
-    const post = await Controller.app.service('api/posts').create({ ...ctx.request.body, userId } as any)
-    Controller.flash(ctx).set('info', 'Post created')
-    Controller.redirect(ctx, '/posts/' + post.id)
+    const post = await app.service('api/posts').create({ ...ctx.request.body, userId } as any)
+    flash(ctx).set('info', 'Post created')
+    redirect(ctx, '/posts/' + post.id)
   }
 
   async myPosts(ctx: ParameterizedContext) {
-    const userId = Controller.session(ctx).user.id
+    const userId = session(ctx).user.id
     if (!userId) {
-      return await Controller.render(ctx, 'views/internal/not-authorized.ejs')
+      return await render(ctx, 'views/internal/not-authorized.ejs')
     }
-    const posts = await Controller.app
-      .service('api/posts')
-      .find({ query: { userId }, paginate: false })
-    await Controller.render(ctx, 'views/posts/my.ejs', { posts })
+    const posts = await app.service('api/posts').find({ query: { userId }, paginate: false })
+    await render(ctx, 'views/posts/my.ejs', { posts })
   }
 
   async show(ctx: ParameterizedContext) {
     const postId = ctx.params.id
-    const post = await Controller.app.service('api/posts').get(postId)
-    await Controller.render(ctx, 'views/posts/show.ejs', {
+    const post = await app.service('api/posts').get(postId)
+    await render(ctx, 'views/posts/show.ejs', {
       post,
-      postBelongsToCurrentUser: Controller.session(ctx).user?.id === post.userId
+      postBelongsToCurrentUser: session(ctx).user?.id === post.userId
     })
   }
 
   async edit(ctx: ParameterizedContext) {
     const postId = ctx.params.id
     const userId = await this.checkCorrectUserAccessing(postId, ctx)
-    const post = await Controller.app.service('api/posts').get(postId)
-    await Controller.render(ctx, 'views/posts/edit.ejs', {
+    const post = await app.service('api/posts').get(postId)
+    await render(ctx, 'views/posts/edit.ejs', {
       post,
       postBelongsToCurrentUser: userId === post.userId
     })
@@ -53,25 +54,25 @@ class PostController extends Controller {
   async update(ctx: ParameterizedContext) {
     const postId = ctx.params.id
     await this.checkCorrectUserAccessing(postId, ctx)
-    await Controller.app.service('api/posts').patch(postId, ctx.request.body)
-    Controller.flash(ctx).set('info', 'Post updated')
-    Controller.redirect(ctx, '/posts/' + postId)
+    await app.service('api/posts').patch(postId, ctx.request.body)
+    flash(ctx).set('info', 'Post updated')
+    redirect(ctx, '/posts/' + postId)
   }
 
   async remove(ctx: ParameterizedContext) {
     const postId = ctx.params.id
     await this.checkCorrectUserAccessing(postId, ctx)
-    await Controller.app.service('api/posts').remove(postId)
-    Controller.flash(ctx).set('info', 'Post removed')
+    await app.service('api/posts').remove(postId)
+    flash(ctx).set('info', 'Post removed')
     ctx.set('HX-Redirect', '/')
   }
 
   private async checkCorrectUserAccessing(postId: number, ctx: ParameterizedContext) {
-    const userId = Controller.session(ctx).user.id
+    const userId = session(ctx).user.id
     if (!userId) {
-      return await Controller.render(ctx, 'views/internal/not-authorized.ejs')
+      return await render(ctx, 'views/internal/not-authorized.ejs')
     }
-    if ((await Controller.app.service('api/posts').get(postId)).userId !== userId) {
+    if ((await app.service('api/posts').get(postId)).userId !== userId) {
       throw new Error('This post does not belong to current user')
     }
     return userId
