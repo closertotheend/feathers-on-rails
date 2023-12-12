@@ -6,10 +6,13 @@
     <div class="container has-text-centered">
       <div class="column is-4 is-offset-4">
         <h3 class="title has-text-black">Login</h3>
-        <div class="box box__login">
-          <!-- <figure class="avatar">
-            <img src="/img/150.png">
-          </figure> -->
+        <div class="box is-centered">
+          <div class="is-flex is-justify-content-center">
+            <figure class="image is-128x128">
+              <img class="is-rounded" src="/img/feather.jpeg">
+            </figure>
+          </div>
+          <br>
           <form action="/login" method="post">
             <%- include('../partials/flash', {global}); %>
             <div class="field">
@@ -25,7 +28,7 @@
             </div>
             <div class="field">
               <label class="checkbox">
-                <input name="rememberMe" type="checkbox" value="true">
+                <input name="rememberMe" type="checkbox" checked disabled>
                 Remember me
               </label>
             </div>

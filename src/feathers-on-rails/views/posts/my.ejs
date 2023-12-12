@@ -5,7 +5,10 @@
   <div class="hero-body is-justify-content-flex-start is-align-items-flex-start">
     <div class="container content">
       <%- include('../partials/flash'); %>
-      <h1>My posts</h1>
+      <div class="columns is-justify-content-space-between">
+        <h1>My posts</h1>
+        <a href="/posts/new" class="button is-link">Create a new post</a>
+      </div>
       <%- posts.map(post => include('../partials/post', {post})); %>
     </div>
   </div>

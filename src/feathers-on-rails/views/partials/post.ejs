@@ -4,7 +4,7 @@
       <div class="content is-medium">
         <h2 class="subtitle is-4 is-capitalized"><%= global.dateFns.formatRelative(new Date(post.createdAt), new Date()) %></h2>
         <a href="/posts/<%=post.id %>" class="title"><%= post.heading %> <span class="subtitle">by <%= post.userEmail %></span></a>
-        <p><%- post.text %></p>
+        <p class="is-text-ellipsis-6-lines"><%- post.text %></p>
       </div>
     </div>
   </div>

@@ -37,6 +37,12 @@ const Core = {
   }
 }
 
+const User = (core: typeof Core) => ({
+  getUserId: (ctx: ParameterizedContext) => {
+    return core.session(ctx).user?.id
+  }
+})
+
 const Locale = {
   setLocale: (ctx: ParameterizedContext, lang: string) => {
     ctx.cookies.set('locale', lang)
@@ -45,7 +51,8 @@ const Locale = {
 
 export const Framework = {
   ...Core,
+  ...User(Core),
   ...Locale
 }
 
-export * from './utils';
+export * from './utils'

@@ -2,11 +2,11 @@ import { ParameterizedContext } from 'koa'
 import { Framework } from '../internal'
 import { app } from '../../app'
 
-const { render, flash, redirect, session } = Framework
+const { render, flash, redirect, session, getUserId } = Framework
 
 class PostController {
   async new(ctx: ParameterizedContext) {
-    const userId = Framework.session(ctx).user?.id
+    const userId = getUserId(ctx)
     if (!userId) {
       return await Framework.render(ctx, 'views/internal/not-authorized.ejs')
     }
@@ -14,7 +14,7 @@ class PostController {
   }
 
   async create(ctx: ParameterizedContext) {
-    const userId = session(ctx).user.id
+    const userId = getUserId(ctx)
     if (!userId) {
       return await render(ctx, 'views/internal/not-authorized.ejs')
     }
@@ -24,7 +24,7 @@ class PostController {
   }
 
   async myPosts(ctx: ParameterizedContext) {
-    const userId = session(ctx).user.id
+    const userId = getUserId(ctx)
     if (!userId) {
       return await render(ctx, 'views/internal/not-authorized.ejs')
     }
@@ -68,7 +68,7 @@ class PostController {
   }
 
   private async checkCorrectUserAccessing(postId: number, ctx: ParameterizedContext) {
-    const userId = session(ctx).user.id
+    const userId = getUserId(ctx)
     if (!userId) {
       return await render(ctx, 'views/internal/not-authorized.ejs')
     }

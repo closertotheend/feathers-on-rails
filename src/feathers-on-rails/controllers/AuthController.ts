@@ -2,20 +2,18 @@ import { ParameterizedContext } from 'koa'
 import { Framework } from '../internal'
 import { app } from '../../app'
 
-const { render, flash, redirect, session } = Framework
+const { render, flash, redirect, session, getUserId } = Framework
 
 class AuthController {
   async profile(ctx: ParameterizedContext) {
-    const userId = session(ctx).user?.id
-    if (!userId) {
+    if (!getUserId(ctx)) {
       redirect(ctx, '/login')
     }
     await render(ctx, 'views/profile/profile.ejs')
   }
 
   async changePassword(ctx: ParameterizedContext) {
-    const userId = session(ctx).user.id
-    if (!userId) {
+    if (!getUserId(ctx)) {
       return await render(ctx, 'views/internal/not-authorized.ejs')
     }
     await app.service('api/auth-management').create({
@@ -48,7 +46,7 @@ class AuthController {
     } catch (e: any) {
       flash(ctx).set('warn', 'Login was unsuccessful: ' + e.message)
     }
-    await render(ctx, 'views/login/login.ejs')
+    await redirect(ctx, '/posts/my')
   }
 
   async signup(ctx: ParameterizedContext) {
