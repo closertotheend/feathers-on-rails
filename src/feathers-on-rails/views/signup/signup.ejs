@@ -1,0 +1,42 @@
+<%- include('../partials/base-begin'); %>
+<%- include('../partials/nav'); %>
+
+<section class="hero has-background-light is-fullheight-with-navbar">
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <div class="column is-4 is-offset-4">
+        <h3 class="title has-text-black">Sign up</h3>
+        <div class="box">
+          <div class="is-flex is-justify-content-center">
+            <figure class="image is-128x128">
+              <img class="is-rounded" src="/img/feather.jpeg">
+            </figure>
+          </div>
+          <br>
+          <form action="/signup" method="post">
+            <%- include('../partials/flash'); %>
+            <div class="field">
+              <div class="control">
+                <input name="email" class="input is-large" type="email" placeholder="Your Email" autofocus="">
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="control">
+                <input name="password" class="input is-large" type="password" placeholder="Your Password">
+              </div>
+            </div>
+            <button class="button is-block is-info is-large is-fullwidth">Sign up</button>
+          </form>
+        </div>
+        <p class="has-text-grey">
+          <a href="/login">Login</a> &nbsp;·&nbsp;
+          <a href="/forgot-password">Forgot Password</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer'); %>
+<%- include('../partials/base-end'); %>

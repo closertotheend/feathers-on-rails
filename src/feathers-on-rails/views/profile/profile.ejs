@@ -1,0 +1,49 @@
+<%- include('../partials/base-begin'); %>
+<%- include('../partials/nav'); %>
+
+<section class="hero is-fullheight-with-navbar">
+  <div class="hero-body is-align-items-flex-start">
+    <div class="container">
+      <h2 class="title is-2">Profile</h2>
+      <h3 class="title is-4">Change password</h3>
+      <form action="/change-password" method="post" x-data="passwordValidation">
+        <%- include('../partials/flash'); %>
+        <div class="field">
+          <label for="oldPassword" class="label">Old password</label>
+          <div class="control has-icons-left">
+            <input id="oldPassword" name="oldPassword" minlength="5" class="input" type="password" placeholder="Old password" />
+            <span class="icon is-small is-left">
+              <i class="fas fa-lock"></i>
+            </span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="password" class="label">New password</label>
+          <div class="control has-icons-left">
+            <input id="password" name="password" minlength="5" class="input" :class="validationError ? 'is-danger' : ''" type="password" placeholder="Password" x-model="password" />
+            <span class="icon is-small is-left">
+              <i class="fas fa-lock"></i>
+            </span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="confirm" class="label">New password confirmation</label>
+          <div class="control has-icons-left">
+            <input id="confirm" name="confirm" minlength="5" class="input" :class="validationError ? 'is-danger' : ''" type="password" placeholder="Confirm" x-model="confirm" />
+            <span class="icon is-small is-left">
+              <i class="fas fa-lock"></i>
+            </span>
+          </div>
+        </div>
+        <div class="field">
+          <span x-show="validationError != false" x-text="validationError"></span>
+        </div>
+        <button class="button is-fullwidth-mobile" x-bind:disabled="validationError || !password" :class="validationError? 'is-danger' : ''">Save</button>
+      </form>
+    </div>
+  </div>
+</section>
+<%- include('../partials/alpine-password-validation.ejs'); %>
+
+<%- include('../partials/footer'); %>
+<%- include('../partials/base-end'); %>

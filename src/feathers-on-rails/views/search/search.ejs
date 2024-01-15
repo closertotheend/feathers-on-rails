@@ -1,0 +1,15 @@
+<%- include('../partials/base-begin'); %>
+<%- include('../partials/nav'); %>
+
+<section class="hero is-fullheight-with-navbar">
+  <div class="hero-body is-justify-content-flex-start is-align-items-flex-start">
+    <div class="container content">
+      <%- include('../partials/flash'); %>
+      <h1>Search results for <%= searchTerm %></h1>
+      <%- posts.map(post => include('../partials/post', {post})) %>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer'); %>
+<%- include('../partials/base-end'); %>

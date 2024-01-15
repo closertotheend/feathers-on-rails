@@ -1,0 +1,36 @@
+<script>
+  const url = 'http://localhost:3030/api/posts';
+
+  function getCookieValue(name) {
+    const regex = new RegExp(`(^| )${name}=([^;]+)`)
+    const match = document.cookie.match(regex)
+    if (match) {
+      return match[2]
+    }
+  }
+
+  fetch(url, {
+      method: 'GET', // or 'POST' or other HTTP methods
+      headers: {
+        'Authorization': JSON.parse(atob(getCookieValue('koa.sess'))).authResult.accessToken,
+        'Content-Type': 'application/json' // set the content type based on your API requirements
+        // Add other headers if needed
+      },
+      // You can include a body for POST requests, if required
+      // body: JSON.stringify({ key: 'value' })
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json(); // or response.text() for non-JSON content
+    })
+    .then(data => {
+      // Handle the response data
+      console.log(data);
+    })
+    .catch(error => {
+      // Handle errors
+      console.error('Fetch error:', error);
+    });
+</script>

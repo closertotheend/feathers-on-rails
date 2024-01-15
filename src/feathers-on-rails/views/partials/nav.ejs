@@ -1,0 +1,68 @@
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="/">
+        <div class="content is-small">
+          <h1 style="margin-bottom: 0;">Blog</h1>
+        </div>
+      </a>
+      <span class="navbar-burger burger" data-target="navbarMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </div>
+    <div id="navbarMenu" class="navbar-menu">
+      <div class="navbar-start">
+        <a class="navbar-item is-active is-size-5 has-text-weight-semibold" href="/">
+          Home
+        </a>
+        <% if (!global?.session?.user){ %>
+        <a class="navbar-item is-size-5 has-text-weight-semibold" href="/signup">
+          Sign up
+        </a>
+        <% } else { %>
+        <a class="navbar-item is-size-5 has-text-weight-semibold" href="/posts/new">
+          Create a post
+        </a>
+        <a class="navbar-item is-size-5 has-text-weight-semibold" href="/posts/my">
+          My Posts
+        </a>
+        <% } %>
+      </div>
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="control has-icons-left">
+            <form x-data="{ searchTerm: '' }" @submit.prevent x-on:submit="window.location.href ='/search?term='+ searchTerm">
+              <input x-model="searchTerm" class="input is-rounded" minlength="3" placeholder="Search">
+              <span class="icon is-left">
+                <i class="fa fa-search"></i>
+              </span>
+            </form>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <% if (global?.session?.user){ %>
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link has-text-weight-semiboldf">
+              <%= global.session.user.email %>
+            </a>
+            <div class="navbar-dropdown">
+              <a href="/profile" class="navbar-item">
+                Profile
+              </a>
+              <a href="/logout" class="navbar-item">
+                Logout
+              </a>
+            </div>
+          </div>
+          <% } else { %>
+          <a class="navbar-item has-text-weight-semibold" href="/login">
+            Login
+          </a>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

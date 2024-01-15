@@ -1,0 +1,21 @@
+<%- include('../partials/base-begin'); %>
+<%- include('../partials/nav'); %>
+
+<section class="hero is-fullheight-with-navbar">
+  <div class="hero-body is-justify-content-flex-start is-align-items-flex-start">
+    <div class="container content">
+      <%- include('../partials/flash'); %>
+      <h4 class="is-capitalized"><%= global.dateFns.formatRelative(new Date(post.createdAt), new Date()) %></h4>
+      <h1><%=post.heading %>
+        <% if (postBelongsToCurrentUser) { %>
+        <a class="subtitle is-clickable" href="/posts/<%=post.id %>/edit">Edit</a>
+        <span hx-post="/posts/<%=post.id %>/delete" hx-confirm="Are you sure you wish to delete this post?" class="subtitle has-text-danger is-clickable" href="/posts/<%=post.id %>/edit">Delete</span>
+        <% } %>
+      </h1>
+      <div class="content" style="white-space:pre-line;"><%- post.text %></div>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer'); %>
+<%- include('../partials/base-end'); %>

@@ -1,0 +1,13 @@
+<%- posts.map(post => include('../partials/post', {post})) %>
+
+<% if(posts.length > 0) { %>
+<div hx-get="/posts/page/<%=nextPageNr %>" hx-trigger="revealed" hx-swap="afterend"></div>
+<% } else { %>
+<section class="section">
+  <div class="columns">
+    <div class="column is-8 is-offset-2 has-text-centered">
+        All posts loaded. Nothing to load more :(
+    </div>
+  </div>
+</section>
+<% } %>

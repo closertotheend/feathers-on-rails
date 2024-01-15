@@ -1,0 +1,17 @@
+<form action="/posts<% if(locals.post) { %>/<%= post.id %><% } %>" method="post" class="box is-flex is-flex-direction-column" style="height: calc(100% - 48px);">
+  <div class="field">
+    <label for="heading" class="label">Post heading</label>
+    <div class="control">
+      <input id="heading" class="input" type="text" placeholder="Heading" name="heading" <% if(locals.post) { %> value="<%- post.heading %>" <% } %>>
+    </div>
+  </div>
+  <div class="field is-flex is-flex-direction-column is-flex-grow-1">
+    <label for="text" class="label">Post text</label>
+    <textarea id="text" class="textarea is-flex-grow-1" placeholder="Content" name="text"><% if(locals.post) {%><%- post.text %><% } %></textarea>
+  </div>
+  <div class="field">
+    <div class="control">
+      <button class="button is-primary is-pulled-right is-fullwidth-mobile">Save</button>
+    </div>
+  </div>
+</form> 

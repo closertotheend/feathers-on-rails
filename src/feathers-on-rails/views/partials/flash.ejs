@@ -1,0 +1,27 @@
+<% if(global.flash.warn){ %>
+<div class="notification is-warning" x-data="{ open: true }" x-show="open" x-transition>
+  <%=global.flash.warn  %>
+  <button type="button" class="delete" x-on:click="open = false"></button>
+</div>
+<% } %>
+
+<% if(global.flash.info){ %>
+<div class="notification is-info" x-data="{ open: true }" x-show="open" x-transition>
+  <%=global.flash.info  %>
+  <button type="button" class="delete" x-on:click="open = false"></button>
+</div>
+<% } %>
+
+<% if(global.flash.error){ %>
+<div class="notification is-danger" x-data="{ open: true }" x-show="open" x-transition>
+  <%=global.flash.error  %>
+  <button type="button" class="delete" x-on:click="open = false"></button>
+</div>
+<% } %>
+
+<% if(global.flash.success){ %>
+<div class="notification is-success" x-data="{ open: true }" x-show="open" x-transition>
+  <%=global.flash.success  %>
+  <button type="button" class="delete" x-on:click="open = false"></button>
+</div>
+<% } %>
